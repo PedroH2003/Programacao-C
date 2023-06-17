@@ -1,4 +1,4 @@
-/*AINDA NÃO ESTÁ TOTALMENTE COMPLETO*/
+/*Pretendo adcionar mais algumas funções mas oque já tem aqui funciona perfeitamente*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,7 +21,16 @@ Noc *remove_lista(Noc *lista);
 
 int main()
 {
+    Noc *lista=NULL;
 
+    lista = insere_fim_ini(lista, 1);
+    lista = insere_fim_ini(lista, 2);
+    lista = insere_fim_ini(lista, 3);
+    lista = insere_apos_ref(lista, 666, 2);
+
+    mostra_noc(lista);
+
+    lista = remove_lista(lista);
 
 
     return 0;
@@ -46,7 +55,7 @@ Noc *insere_fim_ini(Noc *lista, d valor)
     if(lista == NULL)
     {
         lista = novo;
-        lista->prox = lista;
+        lista->proximo = lista;
     }
     else
     {
@@ -69,12 +78,12 @@ Noc *busca_noc(Noc *lista, d ref)
 
     if(aux != NULL)
     {
-        while(aux->proximo != lista and aux->valor != ref)
+        while(aux->proximo != lista && aux->valor != ref)
         {
-            aux = aux2->proximo;
+            aux = aux->proximo;
         }
 
-        if(aux->proximo == lista and aux->valor != ref)
+        if(aux->proximo == lista && aux->valor != ref)
         {
             aux = NULL;
         }
@@ -89,9 +98,9 @@ Noc *insere_apos_ref(Noc *lista, d valor, d ref)
     Noc *novo;
     Noc *aux = busca_noc(lista, ref);
 
-    if(lista == NULL or aux == NULL)
+    if(lista == NULL || aux == NULL)
     {
-        printf("A lista não possui elementos ou nao o elemento de referencia nao existe");
+        printf("A lista nao possui elementos ou o elemento de referencia nao existe");
     }
     else
     {
@@ -120,7 +129,22 @@ void mostra_noc(Noc *lista)
         printf("%d ", aux->valor);
         aux = aux->proximo;
 
-    }while(aux != lista)
+    }while(aux != lista);
 }
 
-Noc *remove_lista(Noc *lista);
+Noc *remove_lista(Noc *lista)
+{
+    Noc *aux = lista->proximo;
+    Noc *aux2 = aux->proximo;
+
+    while(aux2 != lista)
+    {
+        free(aux);
+        aux = aux2;
+        aux2 = aux2->proximo;
+    }
+    free(aux);
+    free(aux2);
+
+    return NULL;
+}
